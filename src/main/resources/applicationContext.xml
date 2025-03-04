@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Defining a Book bean -->
+	<bean id="book1" class="com.yaksha.assignment.Book" scope="prototype">
+		<property name="title" value="The Great Gatsby" />
+		<property name="author" value="F. Scott Fitzgerald" />
+	</bean>
+
+	<!-- Defining a Patron bean -->
+	<bean id="patron1" class="com.yaksha.assignment.Patron" scope="prototype">
+		<property name="name" value="John Doe" />
+		<property name="id" value="12345" />
+	</bean>
+
+</beans>
