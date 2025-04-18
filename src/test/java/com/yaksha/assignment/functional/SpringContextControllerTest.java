@@ -25,41 +25,45 @@ public class SpringContextControllerTest {
 
 	@Test
 	public void testClassPathXmlContextLoadsBookAndPatronCorrectly() throws IOException {
-		// Load the context from the classpath-based XML configuration
-		ApplicationContext contextClasspath = new ClassPathXmlApplicationContext("applicationContext.xml");
+		try {
+			// Load the context from the classpath-based XML configuration
+			ApplicationContext contextClasspath = new ClassPathXmlApplicationContext("applicationContext.xml");
 
-		// Retrieve the beans from the context
-		Book book1 = contextClasspath.getBean("book1", Book.class);
-		Patron patron1 = contextClasspath.getBean("patron1", Patron.class);
+			// Retrieve the beans from the context
+			Book book1 = contextClasspath.getBean("book1", Book.class);
+			Patron patron1 = contextClasspath.getBean("patron1", Patron.class);
 
-		// Assert that the beans are correctly instantiated
-		boolean bookNotNull = book1 != null;
-		boolean patronNotNull = patron1 != null;
+			// Assert that the beans are correctly instantiated
+			boolean bookNotNull = book1 != null;
+			boolean patronNotNull = patron1 != null;
 
-		// Assert that the 'title' and 'name' properties are set correctly
-		boolean bookDetailsCorrect = "The Great Gatsby".equals(book1.getTitle())
-				&& "F. Scott Fitzgerald".equals(book1.getAuthor());
-		boolean patronDetailsCorrect = "John Doe".equals(patron1.getName()) && "12345".equals(patron1.getId());
+			// Assert that the 'title' and 'name' properties are set correctly
+			boolean bookDetailsCorrect = "The Great Gatsby".equals(book1.getTitle())
+					&& "F. Scott Fitzgerald".equals(book1.getAuthor());
+			boolean patronDetailsCorrect = "John Doe".equals(patron1.getName()) && "12345".equals(patron1.getId());
 
-		// Console logging for debugging
-		if (!bookNotNull) {
-			System.out.println("Failure: 'book1' bean is not instantiated or found in the context.");
+			// Console logging for debugging
+			if (!bookNotNull) {
+				System.out.println("Failure: 'book1' bean is not instantiated or found in the context.");
+			}
+			if (!patronNotNull) {
+				System.out.println("Failure: 'patron1' bean is not instantiated or found in the context.");
+			}
+			if (!bookDetailsCorrect) {
+				System.out.println(
+						"Failure: 'book1' properties are incorrect. Expected 'title' as 'The Great Gatsby' and 'author' as 'F. Scott Fitzgerald'.");
+			}
+			if (!patronDetailsCorrect) {
+				System.out.println(
+						"Failure: 'patron1' properties are incorrect. Expected 'name' as 'John Doe' and 'id' as '12345'.");
+			}
+
+			// Use yakshaAssert to validate the test result
+			yakshaAssert(currentTest(), bookNotNull && patronNotNull && bookDetailsCorrect && patronDetailsCorrect,
+					businessTestFile);
+		} catch (Exception ex) {
+			yakshaAssert(currentTest(), false, businessTestFile);
 		}
-		if (!patronNotNull) {
-			System.out.println("Failure: 'patron1' bean is not instantiated or found in the context.");
-		}
-		if (!bookDetailsCorrect) {
-			System.out.println(
-					"Failure: 'book1' properties are incorrect. Expected 'title' as 'The Great Gatsby' and 'author' as 'F. Scott Fitzgerald'.");
-		}
-		if (!patronDetailsCorrect) {
-			System.out.println(
-					"Failure: 'patron1' properties are incorrect. Expected 'name' as 'John Doe' and 'id' as '12345'.");
-		}
-
-		// Use yakshaAssert to validate the test result
-		yakshaAssert(currentTest(), bookNotNull && patronNotNull && bookDetailsCorrect && patronDetailsCorrect,
-				businessTestFile);
 	}
 
 	@Test
